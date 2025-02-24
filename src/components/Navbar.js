@@ -13,10 +13,10 @@ const Navbar = () => {
 
       {/* Navigation Links */}
       <div style={styles.navLinks}>
-        <Link to="/" style={styles.link}>Workspace</Link>
-        <Link to="/calendar" style={styles.link}>Calendar</Link>
-        <Link to="/permissions" style={styles.link}>Permissions</Link>
-        <Link to="/profile" style={styles.link}>Profile</Link>
+        <StyledLink to="/">Workspace</StyledLink>
+        <StyledLink to="/calendar">Calendar</StyledLink>
+        <StyledLink to="/permissions">Permissions</StyledLink>
+        <StyledLink to="/profile">Profile</StyledLink>
       </div>
     </nav>
   );
@@ -48,11 +48,20 @@ const styles = {
     color: "#333",
     fontSize: "16px",
     fontWeight: "500",
-    transition: "color 0.2s ease-in-out",
-  },
-  linkHover: {
-    color: "#007bff",
+    transition: "color 0.3s ease-in-out", // Smooth transition for color change
   },
 };
+
+// Adding hover effect in a new component
+const StyledLink = ({ to, children }) => (
+  <Link
+    to={to}
+    style={styles.link}
+    onMouseEnter={(e) => (e.target.style.color = "#007bff")} // On hover, change to blue
+    onMouseLeave={(e) => (e.target.style.color = "#333")} // On mouse leave, revert to default color
+  >
+    {children}
+  </Link>
+);
 
 export default Navbar;

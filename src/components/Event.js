@@ -1,153 +1,135 @@
-import React from "react";
+import React, { useState } from "react";
+import "./Event.css";
+import culturalFest from "./images.jpeg";
+import dataScienceWorkshop from "./datascience-workshop1714ad5f8cdc439ea9f850313f9db93f.tmb-th950x345.jpg";
+import aiBusinessTalk from "./https---cdn.evbuc.com-images-839266309-2173220867483-1-original.20240902-050442.avif";
+import startupExpo from "./65b2297795c85_startup-expo.jpg.webp";
 
 const events = [
   {
-    title: "Data Structures Lecture",
-    time: "10:00 AM - 11:30 AM",
-    description: "Chapter 7: Binary Trees",
-    color: "#3b82f6", // Blue
+    title: "Data Structures Workshop",
+    date: "Sat, 8 Mar",
+    location: "Auditorium - Block A",
+    category: "Workshop",
+    price: "Free",
+    image: dataScienceWorkshop,
+    description: "Learn the fundamentals of Data Structures with hands-on coding sessions.",
+    time: "10:00 AM - 3:00 PM",
+    organizer: "Tech Club",
+    registerLink: "https://forms.gle/1qY39x6FC99uWnwP7"
   },
   {
-    title: "Project Meeting",
-    time: "2:00 PM - 3:00 PM",
-    description: "Team sync for semester project",
-    color: "#22c55e", // Green
+    title: "AI in Business - Guest Talk",
+    date: "Sun, 10 Mar",
+    location: "Hall 3 - Tech Park",
+    category: "Seminar",
+    price: "₹199",
+    image: aiBusinessTalk,
+    description: "Explore how AI is transforming businesses with real-world case studies.",
+    time: "11:00 AM - 1:00 PM",
+    organizer: "AI Research Lab",
+    registerLink: "https://forms.gle/pr6yvzdK5ey24izL6"
   },
   {
-    title: "Assignment Deadline",
-    time: "11:59 PM",
-    description: "Submit Advanced Algorithms homework",
-    color: "#ef4444", // Red
+    title: "Annual Cultural Fest",
+    date: "Fri, 15 Mar",
+    location: "Main Ground",
+    category: "Fest",
+    price: "₹499 onwards",
+    image: culturalFest,
+    description: "Enjoy a vibrant mix of music, dance, and art performances.",
+    time: "6:00 PM - 10:00 PM",
+    organizer: "Cultural Committee",
+    registerLink: "https://example.com/register-cultural-fest"
+  },
+  {
+    title: "Startup Expo 2025",
+    date: "Wed, 20 Mar",
+    location: "Innovation Hall",
+    category: "Exhibition",
+    price: "Free",
+    image: startupExpo,
+    description: "Network with top startups, investors, and entrepreneurs.",
+    time: "9:00 AM - 5:00 PM",
+    organizer: "Entrepreneurship Cell",
+    registerLink: "https://example.com/register-startup-expo"
   },
 ];
 
 const Event = () => {
+  const [selectedEvent, setSelectedEvent] = useState(null);
+  const [dateFilter, setDateFilter] = useState("All");
+  const [categoryFilter, setCategoryFilter] = useState("All");
+
+  const filteredEvents = events.filter((event) => {
+    const matchesDate = dateFilter === "All" || event.date.includes(dateFilter);
+    const matchesCategory = categoryFilter === "All" || event.category === categoryFilter;
+    return matchesDate && matchesCategory;
+  });
+
   return (
-    <div style={styles.page}>
-      {/* Header */}
-      <div style={styles.header}>
-        <button style={styles.navButton}>{"◀"}</button>
-        <h2 style={styles.month}>March 2024</h2>
-        <button style={styles.navButton}>{"▶"}</button>
-      </div>
+    <div className="event-page">
+      <aside className="event-filters">
+        <h3>Filters</h3>
+        
+        {/* Date Filter */}
+        <div className="filter-group">
+          <h4>Date</h4>
+          <button onClick={() => setDateFilter("Today")}>Today</button>
+          <button onClick={() => setDateFilter("Tomorrow")}>Tomorrow</button>
+          <button onClick={() => setDateFilter("This Weekend")}>This Weekend</button>
+          <button onClick={() => setDateFilter("All")}>All</button>
+        </div>
 
-      {/* Events List */}
-      <div style={styles.eventList}>
-        {events.map((event, index) => (
-          <div key={index} style={styles.eventCard}>
-            <div style={{ ...styles.eventIndicator, backgroundColor: event.color }}></div>
-            <div style={styles.eventContent}>
-              <h3 style={styles.eventTitle}>{event.title}</h3>
-              <p style={styles.eventTime}>{event.time}</p>
-              <p style={styles.eventDescription}>{event.description}</p>
+        {/* Category Filter */}
+        <div className="filter-group">
+          <h4>Category</h4>
+          <button onClick={() => setCategoryFilter("Workshop")}>Workshops</button>
+          <button onClick={() => setCategoryFilter("Seminar")}>Seminars</button>
+          <button onClick={() => setCategoryFilter("Fest")}>Festivals</button>
+          <button onClick={() => setCategoryFilter("Exhibition")}>Exhibitions</button>
+          <button onClick={() => setCategoryFilter("All")}>All</button>
+        </div>
+      </aside>
+
+      <div className="event-list">
+        <h2>Upcoming Events</h2>
+        <div className="event-grid">
+          {filteredEvents.map((event, index) => (
+            <div key={index} className="event-card" onClick={() => setSelectedEvent(event)}>
+              <img src={event.image} alt={event.title} className="event-image" />
+              <div className="event-info">
+                <span className="event-date">{event.date}</span>
+                <h3 className="event-title">{event.title}</h3>
+                <p className="event-location">{event.location}</p>
+                <p className="event-category">{event.category}</p>
+                <p className="event-price">{event.price}</p>
+                <a href={event.registerLink} className="register-link">Register Here</a>
+              </div>
             </div>
-            <i style={styles.calendarIcon}>📅</i>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
 
-      {/* Footer Controls */}
-      <div style={styles.footer}>
-        <button style={styles.controlButton}>Today</button>
-        <button style={styles.controlButton}>Month</button>
-        <button style={styles.controlButton}>Week</button>
-      </div>
+      {/* Event Details Modal */}
+      {selectedEvent && (
+        <div className="event-modal" onClick={() => setSelectedEvent(null)}>
+          <div className="event-modal-content" onClick={(e) => e.stopPropagation()}>
+            <button className="close-modal" onClick={() => setSelectedEvent(null)}>✖</button>
+            <img src={selectedEvent.image} alt={selectedEvent.title} className="modal-image" />
+            <h2>{selectedEvent.title}</h2>
+            <p><strong>Date:</strong> {selectedEvent.date}</p>
+            <p><strong>Time:</strong> {selectedEvent.time}</p>
+            <p><strong>Location:</strong> {selectedEvent.location}</p>
+            <p><strong>Organizer:</strong> {selectedEvent.organizer}</p>
+            <p className="event-description">{selectedEvent.description}</p>
+            <p><strong>Price:</strong> {selectedEvent.price}</p>
+            <a href={selectedEvent.registerLink} className="register-link">Register Here</a>
+          </div>
+        </div>
+      )}
     </div>
   );
-};
-
-// Styles
-const styles = {
-  page: {
-    maxWidth: "900px",
-    margin: "auto",
-    padding: "30px",
-    fontFamily: "Inter, sans-serif",
-  },
-  header: {
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-    fontSize: "22px",
-    fontWeight: "bold",
-    color: "#111827",
-    marginBottom: "25px",
-  },
-  month: {
-    fontWeight: "600",
-  },
-  navButton: {
-    backgroundColor: "#f3f4f6",
-    border: "none",
-    padding: "8px 12px",
-    borderRadius: "6px",
-    fontSize: "18px",
-    cursor: "pointer",
-    transition: "background 0.2s",
-  },
-  eventList: {
-    display: "flex",
-    flexDirection: "column",
-    gap: "12px",
-  },
-  eventCard: {
-    display: "flex",
-    alignItems: "center",
-    padding: "18px 22px",
-    borderRadius: "12px",
-    border: "1px solid #e5e7eb",
-    backgroundColor: "#fff",
-    boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.05)",
-    transition: "transform 0.2s",
-  },
-  eventCardHover: {
-    transform: "scale(1.02)",
-  },
-  eventIndicator: {
-    width: "6px",
-    height: "45px",
-    borderRadius: "6px",
-    marginRight: "15px",
-  },
-  eventContent: {
-    flex: 1,
-  },
-  eventTitle: {
-    fontSize: "17px",
-    fontWeight: "600",
-    color: "#111827",
-    marginBottom: "3px",
-  },
-  eventTime: {
-    fontSize: "15px",
-    color: "#6b7280",
-    marginBottom: "2px",
-  },
-  eventDescription: {
-    fontSize: "14px",
-    color: "#9ca3af",
-  },
-  calendarIcon: {
-    fontSize: "22px",
-    color: "#9ca3af",
-  },
-  footer: {
-    display: "flex",
-    justifyContent: "flex-end",
-    gap: "12px",
-    marginTop: "25px",
-  },
-  controlButton: {
-    backgroundColor: "#ffffff",
-    border: "1px solid #e5e7eb",
-    padding: "10px 14px",
-    borderRadius: "8px",
-    cursor: "pointer",
-    fontSize: "15px",
-    fontWeight: "bold",
-    color: "#111827",
-    transition: "background 0.2s",
-  },
 };
 
 export default Event;

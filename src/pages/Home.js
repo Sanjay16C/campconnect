@@ -1,43 +1,69 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
 
 const Home = () => {
+  const [showCreateModal, setShowCreateModal] = useState(false);
+
+  const handleCreateProject = () => {
+    setShowCreateModal(true);
+  };
+
+  const closeCreateModal = () => {
+    setShowCreateModal(false);
+  };
+
   return (
     <div style={styles.container}>
-      {/* Page Title */}
-      <h1 style={styles.title}>Workspace</h1>
-
-      {/* Create New Project Section */}
-      <div style={styles.requestContainer}>
-        <h2 style={styles.sectionTitle}>Create a New Project</h2>
-        <input type="text" placeholder="Project Name" style={styles.input} />
-        <textarea placeholder="Project Description" style={styles.textarea} />
-        <input type="date" style={styles.input} />
-        <button style={styles.button}>Create Project</button>
-      </div>
-
-      {/* Recent Projects Section */}
-      <h2 style={styles.sectionTitle}>Recent Projects</h2>
+      {/* Projects Section */}
+      <h2 style={styles.sectionTitle}>Projects</h2>
       <div style={styles.projectsContainer}>
         <ProjectCard
           title="AI Chatbot Development"
           description="A chatbot using GPT API for college queries."
-          status="In Progress"
-          statusColor="#ffc107"
         />
         <ProjectCard
           title="Event Management App"
           description="A platform to handle college event registrations."
-          status="Completed"
-          statusColor="#28a745"
         />
         <ProjectCard
           title="Mentorship Portal"
           description="Connecting students with alumni for career guidance."
-          status="Pending"
-          statusColor="#dc3545"
         />
       </div>
+
+      {/* Create New Project Button (Floating Button) */}
+      <div style={styles.createButtonContainer}>
+        <button
+          style={styles.createButton}
+          onClick={handleCreateProject}
+        >
+          +
+        </button>
+      </div>
+
+      {/* Create New Project Modal */}
+      {showCreateModal && (
+        <div style={styles.modal}>
+          <div style={styles.modalContent}>
+            <h2 style={styles.modalTitle}>Create a New Project</h2>
+            <input type="text" placeholder="Project Name" style={styles.input} />
+            <textarea placeholder="Project Description" style={styles.textarea} />
+            
+            {/* New fields */}
+            <input type="number" placeholder="Team Size" style={styles.input} />
+            <input type="text" placeholder="Required Skills" style={styles.input} />
+            
+            {/* Join Team Button */}
+            <button style={styles.button}>Join Team</button>
+
+            <button
+              style={styles.closeButton}
+              onClick={closeCreateModal}
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* Study Resources Section */}
       <h2 style={styles.sectionTitle}>Study Resources</h2>
@@ -63,13 +89,10 @@ const Home = () => {
 };
 
 // Project Card Component
-const ProjectCard = ({ title, description, status, statusColor }) => (
+const ProjectCard = ({ title, description }) => (
   <div style={styles.card}>
     <h3 style={styles.cardTitle}>{title}</h3>
     <p style={styles.cardText}>{description}</p>
-    <span style={{ ...styles.statusBadge, backgroundColor: statusColor }}>
-      {status}
-    </span>
   </div>
 );
 
@@ -90,19 +113,6 @@ const styles = {
     maxWidth: "900px",
     margin: "auto",
     padding: "30px",
-  },
-  title: {
-    fontSize: "28px",
-    fontWeight: "bold",
-    color: "#333",
-    marginBottom: "20px",
-  },
-  requestContainer: {
-    padding: "20px",
-    backgroundColor: "#fff",
-    borderRadius: "8px",
-    boxShadow: "0 2px 10px rgba(0, 0, 0, 0.1)",
-    marginBottom: "30px",
   },
   sectionTitle: {
     fontSize: "20px",
@@ -134,9 +144,6 @@ const styles = {
     fontWeight: "500",
     transition: "0.3s ease-in-out",
   },
-  buttonHover: {
-    backgroundColor: "#0056b3",
-  },
   projectsContainer: {
     display: "flex",
     flexDirection: "column",
@@ -162,16 +169,6 @@ const styles = {
     fontSize: "14px",
     color: "#555",
     marginBottom: "10px",
-  },
-  statusBadge: {
-    position: "absolute",
-    top: "15px",
-    right: "15px",
-    padding: "5px 10px",
-    borderRadius: "5px",
-    color: "#fff",
-    fontSize: "12px",
-    fontWeight: "bold",
   },
   resourcesContainer: {
     display: "flex",
@@ -204,8 +201,60 @@ const styles = {
     fontWeight: "500",
     transition: "0.2s ease-in-out",
   },
-  resourceLinkHover: {
-    color: "#0056b3",
+  createButtonContainer: {
+    position: "fixed",
+    bottom: "30px",
+    right: "30px",
+    zIndex: "1000",
+  },
+  createButton: {
+    backgroundColor: "#007bff",
+    color: "#fff",
+    width: "60px",
+    height: "60px",
+    borderRadius: "50%",
+    fontSize: "30px",
+    border: "none",
+    cursor: "pointer",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+    transition: "0.3s ease-in-out",
+  },
+  modal: {
+    position: "fixed",
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    zIndex: 1000,
+  },
+  modalContent: {
+    backgroundColor: "#fff",
+    padding: "30px",
+    borderRadius: "8px",
+    width: "400px",
+    boxShadow: "0 2px 10px rgba(0, 0, 0, 0.1)",
+  },
+  modalTitle: {
+    fontSize: "20px",
+    fontWeight: "bold",
+    marginBottom: "20px",
+  },
+  closeButton: {
+    backgroundColor: "#dc3545",
+    color: "#fff",
+    padding: "10px 20px",
+    borderRadius: "5px",
+    border: "none",
+    cursor: "pointer",
+    fontWeight: "500",
+    marginTop: "10px",
   },
 };
 
