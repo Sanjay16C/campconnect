@@ -2,6 +2,16 @@ import React, { useState } from "react";
 
 const Home = () => {
   const [showCreateModal, setShowCreateModal] = useState(false);
+  const [projectName, setProjectName] = useState("");
+  const [projectDescription, setProjectDescription] = useState("");
+  const [teamSize, setTeamSize] = useState("");
+  const [requiredSkills, setRequiredSkills] = useState("");
+  
+  const [projects, setProjects] = useState([
+    { name: "AI Chatbot Development", description: "A chatbot using GPT API for college queries." },
+    { name: "Event Management App", description: "A platform to handle college event registrations." },
+    { name: "Mentorship Portal", description: "Connecting students with alumni for career guidance." }
+  ]);
 
   const handleCreateProject = () => {
     setShowCreateModal(true);
@@ -11,26 +21,39 @@ const Home = () => {
     setShowCreateModal(false);
   };
 
+  const handleCreate = () => {
+    const newProject = {
+      name: projectName,
+      description: projectDescription,
+      teamSize: teamSize,
+      requiredSkills: requiredSkills,
+    };
+    
+    setProjects([...projects, newProject]);
+
+    console.log("New Project Created:", newProject);
+
+    setProjectName("");
+    setProjectDescription("");
+    setTeamSize("");
+    setRequiredSkills("");
+
+    closeCreateModal();
+  };
+
   return (
     <div style={styles.container}>
-      {/* Projects Section */}
       <h2 style={styles.sectionTitle}>Projects</h2>
       <div style={styles.projectsContainer}>
-        <ProjectCard
-          title="AI Chatbot Development"
-          description="A chatbot using GPT API for college queries."
-        />
-        <ProjectCard
-          title="Event Management App"
-          description="A platform to handle college event registrations."
-        />
-        <ProjectCard
-          title="Mentorship Portal"
-          description="Connecting students with alumni for career guidance."
-        />
+        {projects.map((project, index) => (
+          <ProjectCard
+            key={index}
+            title={project.name}
+            description={project.description}
+          />
+        ))}
       </div>
 
-      {/* Create New Project Button (Floating Button) */}
       <div style={styles.createButtonContainer}>
         <button
           style={styles.createButton}
@@ -40,32 +63,47 @@ const Home = () => {
         </button>
       </div>
 
-      {/* Create New Project Modal */}
       {showCreateModal && (
         <div style={styles.modal}>
           <div style={styles.modalContent}>
             <h2 style={styles.modalTitle}>Create a New Project</h2>
-            <input type="text" placeholder="Project Name" style={styles.input} />
-            <textarea placeholder="Project Description" style={styles.textarea} />
-            
-            {/* New fields */}
-            <input type="number" placeholder="Team Size" style={styles.input} />
-            <input type="text" placeholder="Required Skills" style={styles.input} />
-            
-            {/* Join Team Button */}
-            <button style={styles.button}>Join Team</button>
-
+            <input
+              type="text"
+              placeholder="Project Name"
+              style={styles.input}
+              value={projectName}
+              onChange={(e) => setProjectName(e.target.value)}
+            />
+            <textarea
+              placeholder="Project Description"
+              style={styles.textarea}
+              value={projectDescription}
+              onChange={(e) => setProjectDescription(e.target.value)}
+            />
+            <input
+              type="number"
+              placeholder="Team Size"
+              style={styles.input}
+              value={teamSize}
+              onChange={(e) => setTeamSize(e.target.value)}
+            />
+            <input
+              type="text"
+              placeholder="Required Skills"
+              style={styles.input}
+              value={requiredSkills}
+              onChange={(e) => setRequiredSkills(e.target.value)}
+            />
             <button
               style={styles.closeButton}
-              onClick={closeCreateModal}
+              onClick={handleCreate}
             >
-              Close
+              Create
             </button>
           </div>
         </div>
       )}
 
-      {/* Study Resources Section */}
       <h2 style={styles.sectionTitle}>Study Resources</h2>
       <div style={styles.resourcesContainer}>
         <ResourceCard
@@ -84,19 +122,23 @@ const Home = () => {
           description="Official React documentation to master frontend development."
         />
       </div>
+
+      <div style={styles.actionButtonContainer}>
+        <button style={styles.actionButton}>Go to Forum</button>
+        <button style={styles.actionButton}>View All Projects</button>
+      </div>
     </div>
   );
 };
 
-// Project Card Component
 const ProjectCard = ({ title, description }) => (
   <div style={styles.card}>
     <h3 style={styles.cardTitle}>{title}</h3>
     <p style={styles.cardText}>{description}</p>
+    <button style={styles.button}>Join Team</button>
   </div>
 );
 
-// Study Resource Card Component
 const ResourceCard = ({ title, link, description }) => (
   <div style={styles.resourceCard}>
     <h3 style={styles.resourceTitle}>{title}</h3>
@@ -107,7 +149,6 @@ const ResourceCard = ({ title, link, description }) => (
   </div>
 );
 
-// Styles
 const styles = {
   container: {
     maxWidth: "900px",
@@ -247,7 +288,7 @@ const styles = {
     marginBottom: "20px",
   },
   closeButton: {
-    backgroundColor: "#dc3545",
+    backgroundColor: "#007bff",
     color: "#fff",
     padding: "10px 20px",
     borderRadius: "5px",
@@ -255,6 +296,24 @@ const styles = {
     cursor: "pointer",
     fontWeight: "500",
     marginTop: "10px",
+  },
+  actionButtonContainer: {
+    display: "flex",
+    justifyContent: "space-between",
+    gap: "20px",
+    marginTop: "30px",
+  },
+  actionButton: {
+    backgroundColor: "#28a745",
+    color: "#fff",
+    padding: "15px 25px",
+    fontSize: "18px",
+    borderRadius: "8px",
+    border: "none",
+    cursor: "pointer",
+    fontWeight: "500",
+    transition: "0.3s ease-in-out",
+    width: "48%",
   },
 };
 
