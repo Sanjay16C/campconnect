@@ -8,9 +8,24 @@ const Project = ({ onBack }) => {
   const [requiredSkills, setRequiredSkills] = useState("");
 
   const [projects, setProjects] = useState([
-    { name: "AI Chatbot Development", description: "A chatbot using GPT API for college queries." },
-    { name: "Event Management App", description: "A platform to handle college event registrations." },
-    { name: "Mentorship Portal", description: "Connecting students with alumni for career guidance." }
+    {
+      name: "AI Chatbot Development",
+      description: "A chatbot using GPT API for college queries.",
+      teamSize: "5",
+      requiredSkills: "Python, AI, React",
+    },
+    {
+      name: "Event Management App",
+      description: "A platform to handle college event registrations.",
+      teamSize: "4",
+      requiredSkills: "Flutter, Firebase",
+    },
+    {
+      name: "Mentorship Portal",
+      description: "Connecting students with alumni for career guidance.",
+      teamSize: "3",
+      requiredSkills: "FastAPI, React, PostgreSQL",
+    },
   ]);
 
   const handleCreateProject = () => setShowCreateModal(true);
@@ -22,17 +37,15 @@ const Project = ({ onBack }) => {
     const newProject = {
       name: projectName,
       description: projectDescription,
-      teamSize: teamSize,
-      requiredSkills: requiredSkills,
+      teamSize: teamSize || "N/A",
+      requiredSkills: requiredSkills || "N/A",
     };
 
-    setProjects([...projects, newProject]);
-
+    setProjects((prevProjects) => [...prevProjects, newProject]);
     setProjectName("");
     setProjectDescription("");
     setTeamSize("");
     setRequiredSkills("");
-
     closeCreateModal();
   };
 
@@ -45,7 +58,13 @@ const Project = ({ onBack }) => {
       <h2 style={styles.sectionTitle}>Projects</h2>
       <div style={styles.projectsContainer}>
         {projects.map((project, index) => (
-          <ProjectCard key={index} title={project.name} description={project.description} />
+          <ProjectCard
+            key={index}
+            title={project.name}
+            description={project.description}
+            teamSize={project.teamSize}
+            requiredSkills={project.requiredSkills}
+          />
         ))}
       </div>
 
@@ -81,7 +100,7 @@ const Project = ({ onBack }) => {
             />
             <input
               type="text"
-              placeholder="Required Skills"
+              placeholder="Required Skills (comma-separated)"
               style={styles.input}
               value={requiredSkills}
               onChange={(e) => setRequiredSkills(e.target.value)}
@@ -96,10 +115,12 @@ const Project = ({ onBack }) => {
   );
 };
 
-const ProjectCard = ({ title, description }) => (
+const ProjectCard = ({ title, description, teamSize, requiredSkills }) => (
   <div style={styles.card}>
     <h3 style={styles.cardTitle}>{title}</h3>
     <p style={styles.cardText}>{description}</p>
+    <p style={styles.cardDetail}>👥 Team Size: {teamSize}</p>
+    <p style={styles.cardDetail}>🛠️ Skills: {requiredSkills}</p>
     <button style={styles.button}>Join Team</button>
   </div>
 );
@@ -137,6 +158,10 @@ const styles = {
     color: "#555",
     marginBottom: "10px",
   },
+  cardDetail: {
+    fontSize: "14px",
+    color: "#333",
+  },
   createButtonContainer: {
     position: "fixed",
     bottom: "30px",
@@ -169,10 +194,28 @@ const styles = {
     borderRadius: "8px",
     width: "400px",
   },
+  input: {
+    width: "100%",
+    padding: "10px",
+    marginBottom: "10px",
+    borderRadius: "5px",
+    border: "1px solid #ccc",
+  },
+  textarea: {
+    width: "100%",
+    padding: "10px",
+    height: "80px",
+    marginBottom: "10px",
+    borderRadius: "5px",
+    border: "1px solid #ccc",
+  },
   closeButton: {
     backgroundColor: "#007bff",
     color: "#fff",
     padding: "10px 20px",
+    width: "100%",
+    borderRadius: "5px",
+    cursor: "pointer",
   },
   backButton: {
     marginBottom: "20px",
@@ -180,6 +223,15 @@ const styles = {
     backgroundColor: "#28a745",
     padding: "10px",
     color: "white",
+    borderRadius: "5px",
+  },
+  button: {
+    backgroundColor: "#1DA1F2",
+    color: "#fff",
+    padding: "10px",
+    width: "100%",
+    borderRadius: "5px",
+    cursor: "pointer",
   },
 };
 
