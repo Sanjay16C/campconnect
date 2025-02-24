@@ -22,20 +22,101 @@ const Permission = () => {
     },
   ]);
 
+  const [file, setFile] = useState(null);
+  const [details, setDetails] = useState("");
+  const [type, setType] = useState("");
+  const [error, setError] = useState("");
+
+  const handleFileChange = (event) => {
+    setFile(event.target.files[0]);
+  };
+
+  const handleDetailsChange = (event) => {
+    const inputText = event.target.value;
+    const wordCount = inputText.split(/\s+/).length;
+
+    // Allow only up to 50 words
+    if (wordCount <= 50) {
+      setDetails(inputText);
+    }
+  };
+
+  const handleTypeChange = (event) => {
+    setType(event.target.value);
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+
+    if (!type || !details) {
+      setError("Please fill out all required fields");
+      return;
+    }
+
+    // Add the new request to the list
+    const newRequest = {
+      type,
+      description: details,
+      status: "Pending",
+      submitted: "Just now",
+    };
+
+    setRequests([...requests, newRequest]);
+
+    // Clear the form fields after submission
+    setType("");
+    setDetails("");
+    setFile(null);
+    setError("");
+  };
+
   return (
     <div style={styles.container}>
       <h2 style={styles.heading}>Permissions</h2>
 
-      {/* Submit Permission Request Form */}
+      {/* Form to Submit Permission Request */}
       <div style={styles.formContainer}>
         <h3 style={styles.subHeading}>Submit Permission Request</h3>
+        {error && <p style={styles.error}>{error}</p>}
 
-        <input type="text" placeholder="e.g., On-Duty, Leave of Absence" style={styles.input} />
-        <textarea placeholder="Provide details about your request" style={styles.textarea}></textarea>
-        
+        <input
+          type="text"
+          placeholder="e.g., On-Duty, Leave of Absence"
+          style={styles.input}
+          value={type}
+          onChange={handleTypeChange}
+        />
+        <textarea
+          placeholder="Provide details about your request (max 50 words)"
+          value={details}
+          onChange={handleDetailsChange}
+          style={styles.textarea}
+        ></textarea>
+        <p style={styles.wordCount}>{50 - details.split(/\s+/).length} words remaining</p>
+
         <input type="date" style={styles.input} />
-        
-        <button style={styles.submitButton}>Submit Request</button>
+
+        {/* Proof File Upload */}
+        <label style={styles.fileUploadLabel}>
+          <span style={styles.fileUploadText}>Upload Proof (Optional)</span>
+          <input
+            type="file"
+            accept=".pdf"
+            onChange={handleFileChange}
+            style={styles.fileUploadInput}
+          />
+        </label>
+
+        {file && (
+          <div style={styles.fileInfo}>
+            <p style={styles.fileName}>{file.name}</p>
+            <p style={styles.fileSize}>{(file.size / 1024).toFixed(2)} KB</p>
+          </div>
+        )}
+
+        <button style={styles.submitButton} onClick={handleSubmit}>
+          Submit Request
+        </button>
       </div>
 
       {/* Recent Requests */}
@@ -48,7 +129,12 @@ const Permission = () => {
               <p style={styles.requestDescription}>{req.description}</p>
               <p style={styles.submittedText}>📅 Submitted {req.submitted}</p>
             </div>
-            <span style={{ ...styles.statusBadge, backgroundColor: statusColor(req.status) }}>
+            <span
+              style={{
+                ...styles.statusBadge,
+                backgroundColor: statusColor(req.status),
+              }}
+            >
               {req.status}
             </span>
           </div>
@@ -62,11 +148,11 @@ const Permission = () => {
 const statusColor = (status) => {
   switch (status) {
     case "Approved":
-      return "#d1fae5"; // Green
+      return "#34D399"; // Green
     case "Pending":
-      return "#fef3c7"; // Yellow
+      return "#FBBF24"; // Yellow
     case "Declined":
-      return "#fee2e2"; // Red
+      return "#F87171"; // Red
     default:
       return "#e5e7eb";
   }
@@ -79,15 +165,18 @@ const styles = {
     margin: "auto",
     padding: "30px",
     fontFamily: "Inter, sans-serif",
+    backgroundColor: "#f9fafb",
+    borderRadius: "10px",
+    boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)",
   },
   heading: {
-    fontSize: "24px",
+    fontSize: "28px",
     fontWeight: "bold",
     color: "#111827",
     marginBottom: "20px",
   },
   subHeading: {
-    fontSize: "18px",
+    fontSize: "20px",
     fontWeight: "600",
     color: "#1f2937",
     marginBottom: "15px",
@@ -107,6 +196,7 @@ const styles = {
     border: "1px solid #d1d5db",
     borderRadius: "8px",
     fontSize: "14px",
+    transition: "border-color 0.3s",
   },
   textarea: {
     width: "100%",
@@ -116,6 +206,8 @@ const styles = {
     borderRadius: "8px",
     fontSize: "14px",
     marginBottom: "12px",
+    resize: "none",
+    transition: "border-color 0.3s",
   },
   submitButton: {
     width: "100%",
@@ -128,6 +220,11 @@ const styles = {
     borderRadius: "8px",
     cursor: "pointer",
     transition: "background 0.2s",
+  },
+  wordCount: {
+    fontSize: "12px",
+    color: "#9ca3af",
+    marginTop: "5px",
   },
   requestList: {
     display: "flex",
@@ -164,6 +261,43 @@ const styles = {
     fontSize: "13px",
     fontWeight: "bold",
     textTransform: "uppercase",
+  },
+  fileUploadLabel: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    padding: "12px",
+    backgroundColor: "#f3f4f6",
+    borderRadius: "8px",
+    border: "1px solid #d1d5db",
+    cursor: "pointer",
+    transition: "background 0.2s, transform 0.2s",
+  },
+  fileUploadText: {
+    fontSize: "14px",
+    color: "#6b7280",
+    marginRight: "10px",
+  },
+  fileUploadInput: {
+    display: "none",
+  },
+  fileInfo: {
+    marginTop: "10px",
+    fontSize: "14px",
+    color: "#6b7280",
+  },
+  fileName: {
+    fontWeight: "600",
+    color: "#111827",
+  },
+  fileSize: {
+    fontStyle: "italic",
+    color: "#9ca3af",
+  },
+  error: {
+    color: "#dc2626",
+    fontSize: "14px",
+    marginBottom: "10px",
   },
 };
 
