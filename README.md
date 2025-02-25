@@ -73,8 +73,13 @@ We welcome contributions! Feel free to open issues or submit pull requests to im
 
 This project is open-source under the MIT License.
 
-<img width="1656" alt="Screenshot 2025-02-24 at 5 14 35 PM" src="https://github.com/user-attachments/assets/a22a1d87-323e-4830-bcd7-1663a63c887a" />![Screenshot 2025-02-24 at 12 09 04 PM](https://github.com/user-attachments/assets/d7012465-ae05-45b2-8568-9c63c099adb4)
-<img width="1671" alt="Screenshot 2025-02-24 at 5 15 24 PM" src="https://github.com/user-attachments/assets/266b54d5-893e-474f-a141-3190b6a21c92" />
+![Screenshot 2025-02-24 at 12 09 04 PM](https://github.com/user-attachments/assets/8c429d93-4ac0-4e96-811e-a7a1890c31d4)
+<img width="1671" alt="Screenshot 2025-02-24 at 5 15 24 PM" src="https://github.com/user-attachments/assets/eb4903a3-d3c4-494d-8b19-be3821dac02f" />
+<img width="1656" alt="Screenshot 2025-02-24 at 5 14 35 PM" src="https://github.com/user-attachments/assets/e758b24e-765f-4528-8da9-3575e5d5ca4a" />
+
+
+
+
 
 
 
