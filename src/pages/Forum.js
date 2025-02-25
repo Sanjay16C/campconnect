@@ -1,25 +1,27 @@
 import React, { useState } from "react";
 
-const Forum = ({ onBack }) => {
+const Forum = ({ onBack, onJoinCommunity, onOpenChat }) => {
   const [posts, setPosts] = useState([
     {
       id: 1,
-      username: "dev_guru",
+      username: "Prarthana",
       avatar: "https://i.pravatar.cc/40?img=1",
       content: "Best resources for learning React? Any recommendations?",
       upvotes: 10,
       timestamp: "2h ago",
+      joined: false,
     },
     {
       id: 2,
-      username: "tech_hacker",
+      username: "Sriram",
       avatar: "https://i.pravatar.cc/40?img=2",
       content: "How to prepare for tech interviews? Key topics to focus on?",
       upvotes: 15,
       timestamp: "3h ago",
+      joined: false,
     },
   ]);
-  
+
   const [newPostContent, setNewPostContent] = useState("");
 
   const handleCreatePost = () => {
@@ -31,6 +33,7 @@ const Forum = ({ onBack }) => {
         content: newPostContent,
         upvotes: 0,
         timestamp: "Just now",
+        joined: false,
       };
       setPosts([newPost, ...posts]);
       setNewPostContent("");
@@ -43,6 +46,15 @@ const Forum = ({ onBack }) => {
         post.id === id ? { ...post, upvotes: post.upvotes + 1 } : post
       )
     );
+  };
+
+  const handleJoinCommunity = (id) => {
+    setPosts(
+      posts.map((post) =>
+        post.id === id ? { ...post, joined: true } : post
+      )
+    );
+    onJoinCommunity(id);
   };
 
   return (
@@ -76,9 +88,32 @@ const Forum = ({ onBack }) => {
             </div>
             <p style={styles.postContent}>{post.content}</p>
             <div style={styles.postActions}>
-              <button style={styles.upvoteButton} onClick={() => upvotePost(post.id)}>
+              <button
+                style={styles.upvoteButton}
+                onClick={() => upvotePost(post.id)}
+              >
                 ⬆ {post.upvotes}
               </button>
+              {!post.joined ? (
+                <button
+                  style={styles.joinButton}
+                  onClick={() => handleJoinCommunity(post.id)}
+                >
+                  Join Community
+                </button>
+              ) : (
+                <>
+                  <button style={styles.joinedButton} disabled>
+                    Joined ✓
+                  </button>
+                  <button
+                    style={styles.messageButton}
+                    onClick={() => onOpenChat(post.id)}
+                  >
+                    Messages 💬
+                  </button>
+                </>
+              )}
             </div>
           </div>
         ))}
@@ -90,7 +125,7 @@ const Forum = ({ onBack }) => {
 const styles = {
   container: { maxWidth: "600px", margin: "auto", padding: "20px" },
   sectionTitle: { fontSize: "22px", fontWeight: "bold", marginBottom: "20px" },
-  
+
   backButton: {
     backgroundColor: "#ff4d4d",
     color: "#fff",
@@ -170,7 +205,7 @@ const styles = {
     color: "#333",
     marginBottom: "10px",
   },
-  
+
   postActions: {
     display: "flex",
     alignItems: "center",
@@ -178,6 +213,30 @@ const styles = {
   },
   upvoteButton: {
     backgroundColor: "#17BF63",
+    color: "#fff",
+    padding: "5px 10px",
+    borderRadius: "8px",
+    border: "none",
+    cursor: "pointer",
+  },
+  joinButton: {
+    backgroundColor: "#FFAA00",
+    color: "#fff",
+    padding: "5px 10px",
+    borderRadius: "8px",
+    border: "none",
+    cursor: "pointer",
+  },
+  joinedButton: {
+    backgroundColor: "#4CAF50",
+    color: "#fff",
+    padding: "5px 10px",
+    borderRadius: "8px",
+    border: "none",
+    cursor: "default",
+  },
+  messageButton: {
+    backgroundColor: "#1DA1F2",
     color: "#fff",
     padding: "5px 10px",
     borderRadius: "8px",
