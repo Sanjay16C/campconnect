@@ -1,27 +1,23 @@
 import React, { useState } from "react";
+import { getFirestore, collection, addDoc } from "firebase/firestore";
+import { initializeApp } from "firebase/app";
+
+// Firebase configuration
+const firebaseConfig = {
+  apiKey: "AIzaSyDov4LXnpuEi9wJc8rYprGftj5UaZpb1O4",
+  authDomain: "campconnect-b28e0.firebaseapp.com",
+  projectId: "campconnect-b28e0",
+  storageBucket: "campconnect-b28e0.firebasestorage.app",
+  messagingSenderId: "698394573741",
+  appId: "1:698394573741:web:b7ff894ebcf2e20d1f3f24",
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
 
 const Permission = () => {
-  const [requests, setRequests] = useState([
-    {
-      type: "On-Duty Request",
-      description: "Technical Workshop Participation",
-      status: "Approved",
-      submitted: "2 days ago",
-    },
-    {
-      type: "Leave of Absence",
-      description: "Medical Appointment",
-      status: "Pending",
-      submitted: "1 day ago",
-    },
-    {
-      type: "Late Submission",
-      description: "Project delay due to illness",
-      status: "Declined",
-      submitted: "3 days ago",
-    },
-  ]);
-
+  const [requests, setRequests] = useState([]);
   const [file, setFile] = useState(null);
   const [details, setDetails] = useState("");
   const [type, setType] = useState("");
@@ -48,7 +44,15 @@ const Permission = () => {
     setDate(event.target.value);
   };
 
-  const handleSubmit = (event) => {
+  const saveRequestToFirebase = async (request) => {
+    try {
+      await addDoc(collection(db, "permissionRequests"), request);
+    } catch (e) {
+      console.error("Error adding document: ", e);
+    }
+  };
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
     if (!type.trim() || !details.trim() || !date.trim()) {
@@ -56,15 +60,15 @@ const Permission = () => {
       return;
     }
 
-    setRequests((prevRequests) => [
-      ...prevRequests,
-      {
-        type,
-        description: details,
-        status: "Pending",
-        submitted: `For ${date}`,
-      },
-    ]);
+    const newRequest = {
+      type,
+      description: details,
+      status: "Pending",
+      submitted: `For ${date}`,
+    };
+
+    setRequests((prevRequests) => [...prevRequests, newRequest]);
+    await saveRequestToFirebase(newRequest);
 
     setType("");
     setDetails("");
@@ -107,7 +111,9 @@ const Permission = () => {
         />
 
         <label style={styles.fileUploadLabel}>
-          <span style={styles.fileUploadText}>Upload Proof (PDF Only, Max 5MB)</span>
+          <span style={styles.fileUploadText}>
+            Upload Proof (PDF Only, Max 5MB)
+          </span>
           <input
             type="file"
             accept=".pdf"
