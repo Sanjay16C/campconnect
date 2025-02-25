@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { getFirestore, collection, addDoc } from "firebase/firestore";
+import React, { useState, useEffect } from "react";
+import { getFirestore, collection, addDoc, onSnapshot } from "firebase/firestore";
 import { initializeApp } from "firebase/app";
 
 // Firebase configuration
@@ -23,6 +23,17 @@ const Permission = () => {
   const [type, setType] = useState("");
   const [date, setDate] = useState("");
   const [error, setError] = useState("");
+
+  useEffect(() => {
+    const unsubscribe = onSnapshot(collection(db, "permissionRequests"), (snapshot) => {
+      const updatedRequests = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      setRequests(updatedRequests);
+    });
+    return () => unsubscribe();
+  }, []);
 
   const handleFileChange = (event) => {
     setFile(event.target.files[0]);
@@ -67,7 +78,6 @@ const Permission = () => {
       submitted: `For ${date}`,
     };
 
-    setRequests((prevRequests) => [...prevRequests, newRequest]);
     await saveRequestToFirebase(newRequest);
 
     setType("");
@@ -143,21 +153,22 @@ const Permission = () => {
 
       <h3 style={styles.subHeading}>Recent Requests</h3>
       <div style={styles.requestList}>
-        {requests.map((req, index) => (
-          <div key={index} style={styles.requestCard}>
+        {requests.map((req) => (
+          <div key={req.id} style={styles.requestCard}>
             <div>
               <h4 style={styles.requestTitle}>{req.type}</h4>
               <p style={styles.requestDescription}>{req.description}</p>
               <p style={styles.submittedText}>📅 {req.submitted}</p>
             </div>
             <span
-              style={{
-                ...styles.statusBadge,
-                backgroundColor: statusColor(req.status),
-              }}
-            >
-              {req.status}
-            </span>
+  style={{
+    ...styles.statusBadge,
+    backgroundColor: statusColor(req.status),
+  }}
+>
+  {req.status}
+</span>
+
           </div>
         ))}
       </div>
@@ -259,12 +270,22 @@ const styles = {
     color: "#111827",
   },
   statusBadge: {
-    padding: "2px 2px",
-    borderRadius: "5px",
-    fontSize: "11px",
-    fontWeight: "light",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    padding: "4px 30px",
+    width: "40px",
+    height: "15px",/* Adjust as per your requirement */
+    borderRadius: "4px", // Fully rounded for a pill shape
+    fontSize: "12px",
+    fontWeight: "600",
     textTransform: "uppercase",
+    color: "#ffffff",
+    textAlign: "center",
+    boxShadow: "0 2px 6px rgba(0, 0, 0, 0.1)", // Soft shadow for a floating effect
+    transition: "background-color 0.3s ease-in-out", // Smooth color transition
   },
+  
   error: {
     color: "#ef4144",
     fontSize: "14px",
