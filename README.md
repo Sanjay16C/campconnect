@@ -1,70 +1,80 @@
-# Getting Started with Create React App
+🏫 CampConnect - Your Campus Connectivity App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+🚀 Overview
 
-## Available Scripts
+CampConnect is a unified platform designed to streamline communication, collaboration, and management for students, faculty, and alumni within a college ecosystem. The platform offers event management, permission approvals, mentorship programs, and real-time student networking—all in one place.
 
-In the project directory, you can run:
+🎯 Key Features
 
-### `npm start`
+✅ Workspaces – Students can form teams, share materials, and collaborate on projects.
+✅ Permission Management – Easily request ODs, bonafide certificates, and approvals digitally.
+✅ Event Management – Stay updated on placement drives, college events, and deadlines with AI-powered recommendations.
+✅ Classroom Social Platform – Engage in real-time discussions beyond lectures.
+✅ Gamified Learning System – Earn points and rewards for interactive coding challenges.
+✅ AI-Powered Smart Learning – Personalized study recommendations using Gemini API.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+🛠 Tech Stack
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+Frontend
+	•	Flutter (Mobile)
+	•	React.js (Web)
 
-### `npm test`
+Backend
+	•	FastAPI (Python)
+	•	PostgreSQL
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Authentication & Realtime Data
+	•	Firebase (Secure login & instant notifications)
+	•	WebSockets (Live discussions)
 
-### `npm run build`
+Hosting & Version Control
+	•	Render (Reliable deployment)
+	•	Git (Version control)
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+📦 Getting Started
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Installation
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+1️⃣ Clone the repository:
 
-### `npm run eject`
+    git clone https://github.com/your-repo/CampConnect.git
+    cd CampConnect
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+2️⃣ Install dependencies:
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+    npm install
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+3️⃣ Start the development server:
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+    npm start
 
-## Learn More
+4️⃣ Open your browser and go to:
+👉 http://localhost:3000
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+🚀 Deployment
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+To build and deploy the project, run:
 
-### Code Splitting
+    npm run build
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+This will generate a production-ready version in the build/ folder.
 
-### Analyzing the Bundle Size
+📚 Learn More
+	•	React Documentation
+	•	FastAPI Documentation
+	•	Firebase Documentation
+	•	PostgreSQL Documentation
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+🤝 Contributing
 
-### Making a Progressive Web App
+We welcome contributions! Feel free to open issues or submit pull requests to improve CampConnect.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+📜 License
 
-### Advanced Configuration
+This project is open-source under the MIT License.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+<img width="1656" alt="Screenshot 2025-02-24 at 5 14 35 PM" src="https://github.com/user-attachments/assets/a22a1d87-323e-4830-bcd7-1663a63c887a" />![Screenshot 2025-02-24 at 12 09 04 PM](https://github.com/user-attachments/assets/d7012465-ae05-45b2-8568-9c63c099adb4)
+<img width="1671" alt="Screenshot 2025-02-24 at 5 15 24 PM" src="https://github.com/user-attachments/assets/266b54d5-893e-474f-a141-3190b6a21c92" />
 
-### Deployment
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
 
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
